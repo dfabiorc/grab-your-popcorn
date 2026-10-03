@@ -142,7 +142,7 @@ object in that file.
 | Tailwind CSS v4                      | Design tokens live in CSS (`@theme`), so `DESIGN.md` maps 1:1 to `index.css` and dark mode only swaps variables. | CSS Modules: more files, no shared scale. A component library (shadcn/ui, Radix Themes): the editorial look needed custom components anyway. |
 | React Router v8 (`createHashRouter`) | Hash routing plus loaders, lazy routes and scroll restoration.                                                   | Hand-rolled hash routing: would re-implement all of that.                                                                                    |
 | TanStack Query                       | Caching, dedupe, infinite queries.                                                                               | Redux/RTK Query: more setup for a read-only app. Plain `fetch` + `useEffect`: no cache, race conditions.                                     |
-| CSS-only motion                      | Every animation is a transition on `transform`/`opacity`; no runtime cost.                                       | Motion (Framer Motion): ~30 KB for effects CSS handles.                                                                                      |
+| CSS-only motion                      | Transitions plus scroll-driven animations and View Transitions; no runtime cost.                                 | Motion (Framer Motion) or GSAP: 30-70 KB and main-thread work for effects CSS now handles natively.                                          |
 | Phosphor icons                       | Consistent regular weight, tree-shaken.                                                                          | Lucide (same idea; Phosphor fits the softer style).                                                                                          |
 | oxlint + Prettier                    | Fast lint with React hook rules; one formatting style.                                                           | ESLint: slower, more config for the same rules here.                                                                                         |
 | Vitest + Playwright + axe            | Unit tests for data logic; real-browser e2e with automatic WCAG checks.                                          | Testing Library component tests: e2e covers the UI with less mocking.                                                                        |
@@ -158,19 +158,43 @@ and motion.
   Fraunces was considered and dropped as an over-used "AI template" serif.
 - Contrast was computed, not eyeballed: every text pair passes WCAG AA in both themes.
 - Motion was decided per interaction (frequency, purpose, easing, duration) and audited
-  per screen. Frequent actions (typing, filtering, infinite scroll) are not animated;
+  per screen. Frequent actions (typing, filtering) are not animated;
   `prefers-reduced-motion` keeps opacity fades and removes movement.
+
+### Cinematic motion (v2)
+
+After the first release the brief evolved to "more modern, like Apple's site, still
+minimal". The warm editorial identity was kept and the motion became cinematic:
+
+- **CSS scroll-driven animations** (`animation-timeline: view()/scroll()`) instead of a
+  JavaScript library. They run on the compositor, are tied 1:1 to the scroll (so they
+  reverse naturally) and cost no JS. Supported in Chrome/Edge 115+ and Safari 26+;
+  everything sits behind `@supports`, so other browsers (Firefox stable, at the time of
+  writing) get the static page. Discarded: GSAP ScrollTrigger and Motion (~30-70 KB,
+  main-thread work, and the same effects are now native).
+- **View Transitions** (same-document, via React Router's `viewTransition`) for the
+  poster that travels into the film page. Only the tapped card gets the shared name
+  (`useViewTransitionState`), so names never collide. Film loaders wait up to 600 ms
+  for data during in-app navigation (never on first load), and cards prefetch data and
+  code on hover/press, so the transition lands on finished content, not a skeleton.
+- **Grids use a shorter reveal** than detail pages because they are browsed constantly.
+- **Measured, not assumed**: animating the hero's `border-radius` vs `clip-path` gave
+  identical frame rates (~134 fps with 4x CPU throttling), Lighthouse stayed at 99-100
+  on desktop and 81-88 on mobile with CLS ≤ 0.026, and an e2e assertion guards against
+  slide-in offsets widening the layout on phones (a real bug found during this work).
+- **Known limitation**: going back has no reverse morph (history navigations don't
+  carry a view-transition flag in the router); it is instant.
 
 ## 8. Performance
 
-Measured with Lighthouse on the production build (`vite preview`):
+Measured with Lighthouse on the production build (`vite preview`), including the cinematic motion:
 
 | Page   | Mobile (simulated slow 4G) | Desktop |
 | ------ | -------------------------- | ------- |
-| Home   | 90                         | 99      |
-| Film   | 82                         | 98      |
-| Person | 89                         | 99      |
-| Search | 87                         | 99      |
+| Home   | 88                         | 99      |
+| Film   | 81                         | 99      |
+| Person | 87                         | 99      |
+| Search | 86                         | 100     |
 
 Accessibility, Best Practices and SEO score 100 on every page.
 

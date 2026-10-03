@@ -12,8 +12,9 @@ match the tables below. If they drift, update both in the same commit.
    backgrounds behind content, no gradients except the backdrop fade.
 2. **Pages read like documents.** Clear type hierarchy, metadata in quiet rows,
    generous whitespace, hairline dividers instead of boxes.
-3. **Restraint in motion.** Animate only state changes the user caused or needs to
-   notice. Nothing that repeats on every keystroke or scroll.
+3. **Cinematic, never in the way.** Scrolling tells a story (a pinned hero, content
+   settling into place, posters travelling between pages), always tied 1:1 to the
+   scroll so it can be reversed. Nothing animates on typing or filtering.
 4. **Accessible by default.** AA contrast for all text, visible focus, keyboard
    reachable, real alt text, skeleton/empty/error states for every query.
 
@@ -39,15 +40,16 @@ Never use pure black or pure white. Shadows are tinted brown, never grey.
 
 ## Typography
 
-| Role         | Family               | Size / line-height            | Weight  | Tracking |
-| ------------ | -------------------- | ----------------------------- | ------- | -------- |
-| Display      | Newsreader (opsz 72) | clamp(40px, 5vw, 68px) / 1.02 | 500     | -0.025em |
-| H2 section   | Newsreader           | 26-34px / 1.15                | 500     | -0.015em |
-| Card title   | Newsreader           | 17px / 1.25                   | 500     | -0.005em |
-| Lede/prose   | Newsreader           | 18-19px / 1.6                 | 400     | 0        |
-| Tagline      | Newsreader italic    | 20px / 1.4                    | 400     | 0        |
-| UI / body    | Instrument Sans      | 15-16px / 1.6                 | 400-500 | 0        |
-| Meta/caption | Instrument Sans      | 13-14px / 1.5                 | 400-500 | 0        |
+| Role         | Family               | Size / line-height                              | Weight  | Tracking |
+| ------------ | -------------------- | ----------------------------------------------- | ------- | -------- |
+| Hero title   | Newsreader (opsz 72) | clamp(52px, 9vw, 132px) / .95                   | 500     | -0.025em |
+| Display      | Newsreader (opsz 72) | clamp(44px, 6.4vw, 96px) / .98                  | 500     | -0.025em |
+| H2 section   | Newsreader (opsz 72) | clamp(28px, 3vw, 40px) / 1.1 (home: up to 72px) | 500     | -0.025em |
+| Card title   | Newsreader           | 17px / 1.25                                     | 500     | -0.005em |
+| Lede/prose   | Newsreader           | 18-19px / 1.6                                   | 400     | 0        |
+| Tagline      | Newsreader italic    | 20px / 1.4                                      | 400     | 0        |
+| UI / body    | Instrument Sans      | 15-16px / 1.6                                   | 400-500 | 0        |
+| Meta/caption | Instrument Sans      | 13-14px / 1.5                                   | 400-500 | 0        |
 
 Fonts are self-hosted with Fontsource variable builds (`font-display: swap`).
 Prose is capped at ~62ch.
@@ -72,7 +74,8 @@ No borders on cards; separation comes from whitespace and hairlines.
 
 ## Components
 
-- **Header**: 64px, sticky, paper background, hairline bottom. Logo + wordmark left, search pill + theme toggle right.
+- **Header**: 64px, sticky, translucent paper (`backdrop-filter: blur(20px) saturate(1.8)`, solid with reduced transparency); the hairline fades in once you scroll. Logo + wordmark left, search pill + theme toggle right.
+- **Home hero**: full-bleed backdrop starting under the header, light text on a dark scrim (fixed colours in both themes), terracotta-light kicker `#F0A27C`, light pill CTA.
 - **Chip** (genre filter): 34px pill, hairline border; selected = ink fill, paper text. `aria-pressed`.
 - **Primary button** (`btn-primary`): 44px pill, ink fill, paper text.
 - **Secondary button** (`btn-secondary`): 40px pill, hairline border, ink text.
@@ -85,8 +88,13 @@ No borders on cards; separation comes from whitespace and hairlines.
 
 Owned by the `animate` / `emil-design-eng` guidance. Defaults:
 
-- Easing: `--ease-out: cubic-bezier(.23, 1, .32, 1)` for entrances and press; plain `ease` for hover and colour.
-- Animate `transform` and `opacity` only. Utilities in `index.css`: `button-motion`, `fade-in-image`, `poster-zoom`, `skeleton`.
+- Easing: `--ease-out: cubic-bezier(.23, 1, .32, 1)` for entrances and press; plain `ease` for hover and colour;
+  `cubic-bezier(.32, .72, 0, 1)` for the shared-element page transition; `linear` for constant motion.
+- Animate `transform` and `opacity` (plus `clip-path` for heading masks, `border-radius` on the hero).
+- Interaction utilities live in `index.css` (`button-motion`, `fade-in-image`, `poster-zoom`, `skeleton`);
+  scroll-driven motion and page transitions in `motion.css`.
+
+### Interaction
 
 | What                                   | Value                                                                      | Purpose                                     |
 | -------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------- |
@@ -98,9 +106,40 @@ Owned by the `animate` / `emil-design-eng` guidance. Defaults:
 | Poster hover (`poster-zoom`)           | `scale(1.025)`, 200ms `ease`, hover + fine pointer only                    | Affordance                                  |
 | Skeleton pulse                         | opacity 1 → .55, 1.6s loop                                                 | Loading                                     |
 
+### Scroll-driven (CSS `animation-timeline`, progressive enhancement)
+
+Tied 1:1 to the scroll position, so everything reverses when scrolling back up. Only
+active where `animation-timeline` is supported and motion is not reduced; elsewhere the
+page renders in its final state.
+
+| What                | Class                                | Behaviour                                                                                                   |
+| ------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Header edge         | `glass-header`                       | Hairline fades in over the first 96px of scroll                                                             |
+| Home hero           | `hero-track` / `hero-stage`          | Pins for ~70svh of scroll; image scales to .86 with 28px corners and dims; copy rises 14vh and fades by 55% |
+| Feed sheet          | `hero-follow`                        | Rises over the pinned hero with rounded top corners and a soft shadow                                       |
+| Film backdrop       | `parallax-backdrop` / `parallax-dim` | Drifts down 32% and zooms 1.04 → 1.12 while leaving; dissolves into paper                                   |
+| Section headings    | `reveal-mask`                        | Wiped in from the bottom (clip-path), rising .35em                                                          |
+| Text, reviews, rows | `reveal`                             | Rise 40px + scale .97 → 1 and fade in while entering                                                        |
+| Grids               | `reveal-grid`                        | Shorter rise (20px, .985) cascading by column (+7% of the entry range per column)                           |
+| Trailer             | `reveal-zoom`                        | Grows from .82 as it scrolls towards the centre                                                             |
+| Horizontal rows     | `reveal-slide`                       | Slide in 80px from the right (clipped, so the page never widens)                                            |
+
+### Page transitions (View Transitions API)
+
+| What               | Behaviour                                                                                                                  |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Poster → film page | The tapped poster travels into the film page poster (`film-poster`), 450ms `cubic-bezier(.32,.72,0,1)`                     |
+| Hero → film page   | The hero image becomes the film backdrop (`film-backdrop`)                                                                 |
+| Everything else    | Old page fades out in 160ms, new page fades in over 260ms; the header stays still                                          |
+| Waiting for data   | In-app film navigations wait up to 600ms for data (prefetched on hover / press); a 2px accent hairline appears after 150ms |
+
+### Rules
+
 - No animation on typing, genre switching or infinite-scroll appends (frequent actions).
 - `prefers-reduced-motion: reduce` keeps the opacity fades and colour changes, and removes
-  button scale, arrow nudge, hover zoom and the skeleton pulse.
+  button scale, arrow nudge, hover zoom, the skeleton pulse, every scroll-driven effect
+  and page transitions. The progress hairline becomes static.
+- `prefers-reduced-transparency: reduce` makes the header solid.
 
 ## Iconography
 

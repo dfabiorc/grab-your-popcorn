@@ -33,6 +33,9 @@ All data comes from [TMDB](https://www.themoviedb.org/).
   newest first.
 - **Search** for films and people as you type.
 - **Every page has a shareable URL** that survives a reload, including on GitHub Pages.
+- **Cinematic scrolling**: a full-screen hero that pins and shrinks as you scroll, content
+  that settles into place, and posters that travel into the film page (CSS scroll-driven
+  animations and View Transitions, with a static fallback and reduced-motion support).
 - **Light and dark themes** (follows the system, remembers your choice).
 - **Accessible**: keyboard navigation with visible focus, screen-reader labels,
   reduced-motion support, WCAG AA contrast, skeleton, empty and error states. Checked
@@ -133,8 +136,8 @@ chunk loads and renders a skeleton. The page then reads the same query from TanS
 Query's cache. Everything stays in memory for the session, so going back to a page
 costs no extra request.
 
-**Performance.** Lighthouse on the production build: 98–99 performance on desktop and
-82–90 on simulated slow mobile, with 100 accessibility, best practices and SEO on
+**Performance.** Lighthouse on the production build: 99–100 performance on desktop and
+81–88 on simulated slow mobile, with 100 accessibility, best practices and SEO on
 every page. Details in [docs/DECISIONS.md](docs/DECISIONS.md#8-performance).
 
 ## Limitations
