@@ -10,6 +10,25 @@ const en = {
     themeToDark: 'Switch to dark theme',
     skipToContent: 'Skip to content',
   },
+  home: {
+    featuredKicker: 'Latest release',
+    viewFilm: 'View film',
+    newReleases: 'New releases',
+    newReleasesNote: 'Newest first, updated daily',
+    genreFilterLabel: 'Filter by genre',
+    allGenres: 'All',
+    loadMore: 'Load more films',
+    loadingMore: 'Loading more films…',
+    endOfList: 'You have reached the end of the list.',
+    emptyTitle: 'No films here yet',
+    emptyBody: 'There are no recent releases in this genre. Try another one.',
+    showAll: 'Show all genres',
+    shownCount: (n: number) => `${n} films shown`,
+  },
+  movie: {
+    score: 'TMDB score',
+    votes: (n: string) => `${n} votes`,
+  },
   footer: {
     attribution:
       'This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.',

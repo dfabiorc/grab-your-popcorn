@@ -85,11 +85,21 @@ No borders on cards; separation comes from whitespace and hairlines.
 
 Owned by the `animate` / `emil-design-eng` guidance. Defaults:
 
-- Easing: `--ease-out: cubic-bezier(.23, 1, .32, 1)`. Durations 150-250ms for UI, 400ms for image fade-in.
-- Animate `transform` and `opacity` only.
-- Image fade-in when loaded; button press scale; subtle poster zoom on hover (pointer devices only).
-- No animation on typing, filtering or infinite-scroll appends.
-- `prefers-reduced-motion: reduce` removes all transitions and the skeleton pulse.
+- Easing: `--ease-out: cubic-bezier(.23, 1, .32, 1)` for entrances and press; plain `ease` for hover and colour.
+- Animate `transform` and `opacity` only. Utilities in `index.css`: `press`, `fade-in-image`, `poster-zoom`, `skeleton`.
+
+| What | Value | Purpose |
+|------|-------|---------|
+| Image fade-in on network load | opacity, 250ms `--ease-out` | Prevents images popping in |
+| Image already cached (e.g. going back) | no animation | Was already there; a re-fade would be noise |
+| Button press (`press`) | `scale(.97)`, 160ms `--ease-out` | Feedback |
+| Genre chip selection | colours, 150ms `ease` | State change |
+| Poster hover (`poster-zoom`) | `scale(1.025)`, 200ms `ease`, hover + fine pointer only | Affordance |
+| Skeleton pulse | opacity 1 → .55, 1.6s loop | Loading |
+
+- No animation on typing, genre switching or infinite-scroll appends (frequent actions).
+- `prefers-reduced-motion: reduce` keeps the opacity fades and colour changes, and removes
+  press scale, hover zoom and the skeleton pulse.
 
 ## Iconography
 

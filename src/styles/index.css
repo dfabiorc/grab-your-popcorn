@@ -106,10 +106,7 @@
   color: var(--paper);
   font-size: 15px;
   font-weight: 500;
-  transition: transform 160ms var(--ease-out);
-  &:active {
-    transform: scale(0.97);
-  }
+  @apply press;
 }
 
 @utility display-serif {
@@ -118,13 +115,48 @@
   letter-spacing: -0.025em;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+/* Motion (see DESIGN.md). Reduced motion keeps opacity fades and drops movement. */
+
+/* Press feedback for anything clickable. */
+@utility press {
+  @media (prefers-reduced-motion: no-preference) {
+    transition: transform 160ms var(--ease-out);
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+}
+
+/* Images start transparent and fade in once decoded, so they never pop in. */
+@utility fade-in-image {
+  opacity: 0;
+  /* transform is listed here too so poster-zoom eases instead of snapping. */
+  transition:
+    opacity 250ms var(--ease-out),
+    transform 200ms ease;
+  &[data-loaded='true'] {
+    opacity: 1;
+  }
+}
+
+/* Near-imperceptible poster zoom while hovering its card (mouse only). */
+@utility poster-zoom {
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    :where(.group):hover & {
+      transform: scale(1.025);
+    }
+  }
+}
+
+@utility skeleton {
+  background: var(--line);
+  @media (prefers-reduced-motion: no-preference) {
+    animation: skeleton-pulse 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.55;
   }
 }

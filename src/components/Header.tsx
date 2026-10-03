@@ -29,7 +29,7 @@ export function Header() {
 
         <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
           <form role="search" onSubmit={onSubmit} className="min-w-0 flex-1 sm:max-w-72 sm:flex-none">
-            <label className="flex h-[38px] items-center gap-2 rounded-full border border-line bg-surface px-3 text-muted focus-within:border-ink">
+            <label className="flex h-[38px] items-center gap-2 rounded-full border border-line bg-surface px-3 text-muted focus-within:border-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent">
               <MagnifyingGlassIcon aria-hidden="true" className="size-4 shrink-0" />
               <span className="sr-only">{t.nav.searchLabel}</span>
               <input
