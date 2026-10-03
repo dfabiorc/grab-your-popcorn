@@ -21,8 +21,8 @@ export function Header() {
     <header className="sticky top-0 z-20 border-b border-line bg-paper">
       <div className="wrap flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label={`${SITE_NAME}, ${t.nav.home}`}>
-          <LogoMark />
-          <span className="hidden font-serif text-xl font-semibold tracking-[-0.01em] whitespace-nowrap sm:inline">
+          <LogoMark className="size-8" />
+          <span className="display-serif hidden text-[23px] leading-none font-medium whitespace-nowrap sm:inline">
             {SITE_NAME}
           </span>
         </Link>

@@ -12,7 +12,6 @@
   --muted: #6a6055;
   --line: #e0d8ca;
   --accent: #a3421c;
-  --pop: #f1d58a;
   --shadow-soft: 0 1px 2px rgb(60 40 20 / 0.06), 0 8px 24px -12px rgb(60 40 20 / 0.14);
   --shadow-lift: 0 2px 4px rgb(40 25 10 / 0.1), 0 24px 48px -20px rgb(40 25 10 / 0.35);
   color-scheme: light;
@@ -26,7 +25,6 @@
     --muted: #a89d8f;
     --line: #3a332c;
     --accent: #e2865c;
-    --pop: #d9bc6e;
     --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3);
     --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.3), 0 24px 48px -20px rgb(0 0 0 / 0.6);
     color-scheme: dark;
@@ -40,7 +38,6 @@
   --muted: #a89d8f;
   --line: #3a332c;
   --accent: #e2865c;
-  --pop: #d9bc6e;
   --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.3), 0 24px 48px -20px rgb(0 0 0 / 0.6);
   color-scheme: dark;
@@ -53,7 +50,6 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-accent: var(--accent);
-  --color-pop: var(--pop);
 
   --font-serif: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
   --font-sans: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
@@ -106,7 +102,26 @@
   color: var(--paper);
   font-size: 15px;
   font-weight: 500;
-  @apply press;
+  @apply button-motion;
+}
+
+/* Quiet outline variant (e.g. "Load more"). */
+@utility btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding-inline: 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-weight: 500;
+  @apply button-motion;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      border-color: var(--muted);
+    }
+  }
 }
 
 @utility display-serif {
@@ -117,12 +132,31 @@
 
 /* Motion (see DESIGN.md). Reduced motion keeps opacity fades and drops movement. */
 
-/* Press feedback for anything clickable. */
-@utility press {
+/*
+ * Buttons: grow slightly on hover (mouse only), press in on click, and nudge
+ * a trailing arrow (.btn-arrow) towards where the button takes you.
+ * Hover eases with `ease`; the press snaps faster with the strong ease-out.
+ */
+@utility button-motion {
   @media (prefers-reduced-motion: no-preference) {
-    transition: transform 160ms var(--ease-out);
+    transition:
+      transform 200ms ease,
+      border-color 150ms ease;
+    & .btn-arrow {
+      transition: transform 200ms ease;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        transform: scale(1.04);
+      }
+      &:hover .btn-arrow {
+        transform: translateX(3px);
+      }
+    }
     &:active {
       transform: scale(0.97);
+      transition-duration: 100ms;
+      transition-timing-function: var(--ease-out);
     }
   }
 }

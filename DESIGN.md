@@ -30,7 +30,6 @@ chooses otherwise (`data-theme` on `<html>`).
 | Secondary text   | `--muted`        | `#6A6055` | `#A89D8F` | metadata, captions (AA on paper) |
 | Hairline         | `--line`         | `#E0D8CA` | `#3A332C` | dividers, chip borders, image placeholders |
 | Accent           | `--accent`       | `#A3421C` | `#E2865C` | kicker labels, links on hover, focus ring |
-| Popcorn          | `--pop`          | `#F1D58A` | `#D9BC6E` | logo only |
 
 Contrast (WCAG 2.2, computed): ink/paper 14.9:1, muted/paper 5.3:1, accent/paper 5.4:1,
 muted/surface 5.8:1; dark ink/paper 14.0:1, dark muted/paper 6.6:1, dark accent/paper 6.5:1,
@@ -75,7 +74,8 @@ No borders on cards; separation comes from whitespace and hairlines.
 
 - **Header**: 64px, sticky, paper background, hairline bottom. Logo + wordmark left, search pill + theme toggle right.
 - **Chip** (genre filter): 34px pill, hairline border; selected = ink fill, paper text. `aria-pressed`.
-- **Primary button**: 44px pill, ink fill, paper text. Press: `scale(.97)`.
+- **Primary button** (`btn-primary`): 44px pill, ink fill, paper text.
+- **Secondary button** (`btn-secondary`): 40px pill, hairline border, ink text.
 - **Poster card**: poster (2:3, radius-sm, soft shadow), serif title, muted year.
 - **Facts row**: `<dl>` grid, hairline above and below each cell, muted label over medium value.
 - **Skeletons**: same shape as the content, `--line` fill, slow opacity pulse (disabled with reduced motion).
@@ -86,20 +86,21 @@ No borders on cards; separation comes from whitespace and hairlines.
 Owned by the `animate` / `emil-design-eng` guidance. Defaults:
 
 - Easing: `--ease-out: cubic-bezier(.23, 1, .32, 1)` for entrances and press; plain `ease` for hover and colour.
-- Animate `transform` and `opacity` only. Utilities in `index.css`: `press`, `fade-in-image`, `poster-zoom`, `skeleton`.
+- Animate `transform` and `opacity` only. Utilities in `index.css`: `button-motion`, `fade-in-image`, `poster-zoom`, `skeleton`.
 
 | What | Value | Purpose |
 |------|-------|---------|
 | Image fade-in on network load | opacity, 250ms `--ease-out` | Prevents images popping in |
 | Image already cached (e.g. going back) | no animation | Was already there; a re-fade would be noise |
-| Button press (`press`) | `scale(.97)`, 160ms `--ease-out` | Feedback |
+| Button hover (`button-motion`) | `scale(1.04)` + trailing arrow `translateX(3px)`, 200ms `ease`, mouse only | Affordance |
+| Button press (`button-motion`) | `scale(.97)`, 100ms `--ease-out` | Feedback |
 | Genre chip selection | colours, 150ms `ease` | State change |
 | Poster hover (`poster-zoom`) | `scale(1.025)`, 200ms `ease`, hover + fine pointer only | Affordance |
 | Skeleton pulse | opacity 1 → .55, 1.6s loop | Loading |
 
 - No animation on typing, genre switching or infinite-scroll appends (frequent actions).
 - `prefers-reduced-motion: reduce` keeps the opacity fades and colour changes, and removes
-  press scale, hover zoom and the skeleton pulse.
+  button scale, arrow nudge, hover zoom and the skeleton pulse.
 
 ## Iconography
 
@@ -107,6 +108,10 @@ Phosphor Icons (regular weight), 16-20px, `currentColor`. The logo is the only c
 
 ## Logo
 
-A striped popcorn bucket (accent stripes on surface, ink outline) with three popcorn
-puffs in `--pop`, beside the "Grab Your Popcorn" wordmark in Newsreader 600.
-The favicon is the bucket alone. The TMDB logo appears only in the footer, smaller than ours.
+Line-art popcorn bucket: a cloud of popcorn over a tapered bucket with two stripes.
+Transparent, single stroke in `currentColor` (1.6px at 32px, 2px in the favicon), so it is
+ink on paper and near-white in dark mode. The wordmark "Grab Your Popcorn" uses the display
+style (Newsreader 500, opsz 72, -0.025em), the same as page titles.
+The favicon is the bucket alone and follows the system theme; the Apple touch icon keeps a
+paper background because iOS fills transparency with black.
+The TMDB logo appears only in the footer, smaller than ours.

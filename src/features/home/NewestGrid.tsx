@@ -87,7 +87,7 @@ export function NewestGrid({ genreId, excludeId, onClearGenre }: NewestGridProps
           <button
             type="button"
             onClick={() => fetchNextPage()}
-            className="press h-10 rounded-full border border-line px-5 font-medium text-ink"
+            className="btn-secondary"
           >
             {t.home.loadMore}
           </button>

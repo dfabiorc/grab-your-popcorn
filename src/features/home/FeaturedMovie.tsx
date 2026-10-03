@@ -58,7 +58,7 @@ export function FeaturedMovie({ movie, genres }: FeaturedMovieProps) {
         )}
         <Link to={`/movie/${movie.id}`} className="btn-primary mt-6">
           {t.home.viewFilm}
-          <ArrowRightIcon aria-hidden="true" className="size-4" />
+          <ArrowRightIcon aria-hidden="true" className="btn-arrow size-4" />
         </Link>
       </div>
     </section>
