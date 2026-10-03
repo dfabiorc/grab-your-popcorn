@@ -1,5 +1,7 @@
 @import '@fontsource-variable/newsreader/opsz.css';
-@import '@fontsource-variable/newsreader/opsz-italic.css';
+/* Italic is only used at text sizes (taglines), where the optical-size axis adds
+   ~80 KB for no visible change, so it uses the lighter weight-only file. */
+@import '@fontsource-variable/newsreader/wght-italic.css';
 @import '@fontsource-variable/instrument-sans/wght.css';
 @import 'tailwindcss';
 

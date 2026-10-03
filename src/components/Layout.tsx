@@ -18,7 +18,8 @@ export function Layout() {
         {t.nav.skipToContent}
       </a>
       <Header />
-      <main id="main" tabIndex={-1} className="outline-none">
+      {/* At least one screen tall: the footer never sits in view while a page is loading and then jumps. */}
+      <main id="main" tabIndex={-1} className="min-h-dvh outline-none">
         <Outlet />
       </main>
       <Footer />
