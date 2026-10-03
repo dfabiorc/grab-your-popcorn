@@ -47,8 +47,10 @@ export function TmdbImage({
   const src = imageUrl(path, width, base, kind)
   if (!src) {
     const Icon = kind === 'profile' ? UserIcon : FilmSlateIcon
+    // Same contract as <img alt="">: an empty alt means decorative, so hide it.
+    const a11y = alt ? { role: 'img', 'aria-label': alt } : { 'aria-hidden': true }
     return (
-      <div role="img" aria-label={alt} className={`grid place-items-center bg-line text-muted ${className}`}>
+      <div {...a11y} className={`grid place-items-center bg-line text-muted ${className}`}>
         <Icon aria-hidden="true" className="size-1/4 max-h-10 max-w-10 opacity-70" />
       </div>
     )
