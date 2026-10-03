@@ -7,7 +7,7 @@ import { mockTmdb } from './fixtures'
  * error or uncaught exception.
  */
 export const test = base.extend<{ page: Page }>({
-  page: async ({ page }, use) => {
+  page: async ({ page }, provide) => {
     const errors: string[] = []
     page.on('pageerror', (error) => errors.push(error.message))
     page.on('console', (message) => {
@@ -15,7 +15,7 @@ export const test = base.extend<{ page: Page }>({
       if (message.type() === 'error' && !message.text().includes('404')) errors.push(message.text())
     })
     await mockTmdb(page)
-    await use(page)
+    await provide(page)
     expect(errors, 'console errors').toEqual([])
   },
 })
