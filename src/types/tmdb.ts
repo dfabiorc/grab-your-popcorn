@@ -83,6 +83,7 @@ export interface MovieDetails extends Omit<MovieSummary, 'genre_ids'> {
   credits: { cast: CastCredit[]; crew: CrewCredit[] }
   videos: { results: Video[] }
   reviews: Paged<Review>
+  recommendations: Paged<MovieSummary>
   similar: Paged<MovieSummary>
 }
 
