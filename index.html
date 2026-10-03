@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grab Your Popcorn · Find your next film</title>
+    <meta name="description" content="Discover the latest films, with cast, crew, trailers and reviews from TMDB." />
+    <meta name="theme-color" content="#F3EEE5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1C1916" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Grab Your Popcorn" />
+    <meta property="og:description" content="Discover the latest films, with cast, crew, trailers and reviews from TMDB." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://api.themoviedb.org" crossorigin />
+    <link rel="preconnect" href="https://image.tmdb.org" />
+    <script>
+      // Apply the saved theme before first paint to avoid a light/dark flash.
+      try {
+        const theme = localStorage.getItem('gyp-theme')
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
