@@ -57,6 +57,7 @@ export function pickTrailer(videos: Video[]): Video | null {
  */
 export function reviewParagraphs(content: string): string[] {
   return content
+    .replace(/\u00a0/g, ' ') // non-breaking spaces would stop lines from wrapping
     .replace(/\r\n?/g, '\n')
     .replace(/<[^>]+>/g, '')
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')

@@ -22,14 +22,14 @@ match the tables below. If they drift, update both in the same commit.
 Semantic roles. Light is the default; dark follows the system unless the user
 chooses otherwise (`data-theme` on `<html>`).
 
-| Role             | Token            | Light     | Dark      | Use |
-|------------------|------------------|-----------|-----------|-----|
-| Page background  | `--paper`        | `#F3EEE5` | `#1C1916` | `body`, sticky header |
-| Raised surface   | `--surface`      | `#FBF8F2` | `#25211D` | inputs, icon buttons, play button |
-| Primary text     | `--ink`          | `#1F1A14` | `#EDE5D8` | headings, body |
-| Secondary text   | `--muted`        | `#6A6055` | `#A89D8F` | metadata, captions (AA on paper) |
-| Hairline         | `--line`         | `#E0D8CA` | `#3A332C` | dividers, chip borders, image placeholders |
-| Accent           | `--accent`       | `#A3421C` | `#E2865C` | kicker labels, links on hover, focus ring |
+| Role            | Token       | Light     | Dark      | Use                                        |
+| --------------- | ----------- | --------- | --------- | ------------------------------------------ |
+| Page background | `--paper`   | `#F3EEE5` | `#1C1916` | `body`, sticky header                      |
+| Raised surface  | `--surface` | `#FBF8F2` | `#25211D` | inputs, icon buttons, play button          |
+| Primary text    | `--ink`     | `#1F1A14` | `#EDE5D8` | headings, body                             |
+| Secondary text  | `--muted`   | `#6A6055` | `#A89D8F` | metadata, captions (AA on paper)           |
+| Hairline        | `--line`    | `#E0D8CA` | `#3A332C` | dividers, chip borders, image placeholders |
+| Accent          | `--accent`  | `#A3421C` | `#E2865C` | kicker labels, links on hover, focus ring  |
 
 Contrast (WCAG 2.2, computed): ink/paper 14.9:1, muted/paper 5.3:1, accent/paper 5.4:1,
 muted/surface 5.8:1; dark ink/paper 14.0:1, dark muted/paper 6.6:1, dark accent/paper 6.5:1,
@@ -39,15 +39,15 @@ Never use pure black or pure white. Shadows are tinted brown, never grey.
 
 ## Typography
 
-| Role        | Family                         | Size / line-height            | Weight | Tracking |
-|-------------|--------------------------------|-------------------------------|--------|----------|
-| Display     | Newsreader (opsz 72)           | clamp(40px, 5vw, 68px) / 1.02 | 500    | -0.025em |
-| H2 section  | Newsreader                     | 26-34px / 1.15                | 500    | -0.015em |
-| Card title  | Newsreader                     | 17px / 1.25                   | 500    | -0.005em |
-| Lede/prose  | Newsreader                     | 18-19px / 1.6                 | 400    | 0 |
-| Tagline     | Newsreader italic              | 20px / 1.4                    | 400    | 0 |
-| UI / body   | Instrument Sans                | 15-16px / 1.6                 | 400-500| 0 |
-| Meta/caption| Instrument Sans                | 13-14px / 1.5                 | 400-500| 0 |
+| Role         | Family               | Size / line-height            | Weight  | Tracking |
+| ------------ | -------------------- | ----------------------------- | ------- | -------- |
+| Display      | Newsreader (opsz 72) | clamp(40px, 5vw, 68px) / 1.02 | 500     | -0.025em |
+| H2 section   | Newsreader           | 26-34px / 1.15                | 500     | -0.015em |
+| Card title   | Newsreader           | 17px / 1.25                   | 500     | -0.005em |
+| Lede/prose   | Newsreader           | 18-19px / 1.6                 | 400     | 0        |
+| Tagline      | Newsreader italic    | 20px / 1.4                    | 400     | 0        |
+| UI / body    | Instrument Sans      | 15-16px / 1.6                 | 400-500 | 0        |
+| Meta/caption | Instrument Sans      | 13-14px / 1.5                 | 400-500 | 0        |
 
 Fonts are self-hosted with Fontsource variable builds (`font-display: swap`).
 Prose is capped at ~62ch.
@@ -61,10 +61,10 @@ Prose is capped at ~62ch.
 
 ## Shape and depth
 
-| Token         | Value | Use |
-|---------------|-------|-----|
-| `--radius`    | 10px  | backdrops, trailer, large media |
-| `--radius-sm` | 6px   | posters, profile photos |
+| Token         | Value | Use                                  |
+| ------------- | ----- | ------------------------------------ |
+| `--radius`    | 10px  | backdrops, trailer, large media      |
+| `--radius-sm` | 6px   | posters, profile photos              |
 | pill          | 999px | buttons, chips, search, icon buttons |
 
 Shadows: `--shadow-soft` (posters, feature image) and `--shadow-lift` (movie page poster only).
@@ -88,15 +88,15 @@ Owned by the `animate` / `emil-design-eng` guidance. Defaults:
 - Easing: `--ease-out: cubic-bezier(.23, 1, .32, 1)` for entrances and press; plain `ease` for hover and colour.
 - Animate `transform` and `opacity` only. Utilities in `index.css`: `button-motion`, `fade-in-image`, `poster-zoom`, `skeleton`.
 
-| What | Value | Purpose |
-|------|-------|---------|
-| Image fade-in on network load | opacity, 250ms `--ease-out` | Prevents images popping in |
-| Image already cached (e.g. going back) | no animation | Was already there; a re-fade would be noise |
-| Button hover (`button-motion`) | `scale(1.04)` + trailing arrow `translateX(3px)`, 200ms `ease`, mouse only | Affordance |
-| Button press (`button-motion`) | `scale(.97)`, 100ms `--ease-out` | Feedback |
-| Genre chip selection | colours, 150ms `ease` | State change |
-| Poster hover (`poster-zoom`) | `scale(1.025)`, 200ms `ease`, hover + fine pointer only | Affordance |
-| Skeleton pulse | opacity 1 → .55, 1.6s loop | Loading |
+| What                                   | Value                                                                      | Purpose                                     |
+| -------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------- |
+| Image fade-in on network load          | opacity, 250ms `--ease-out`                                                | Prevents images popping in                  |
+| Image already cached (e.g. going back) | no animation                                                               | Was already there; a re-fade would be noise |
+| Button hover (`button-motion`)         | `scale(1.04)` + trailing arrow `translateX(3px)`, 200ms `ease`, mouse only | Affordance                                  |
+| Button press (`button-motion`)         | `scale(.97)`, 100ms `--ease-out`                                           | Feedback                                    |
+| Genre chip selection                   | colours, 150ms `ease`                                                      | State change                                |
+| Poster hover (`poster-zoom`)           | `scale(1.025)`, 200ms `ease`, hover + fine pointer only                    | Affordance                                  |
+| Skeleton pulse                         | opacity 1 → .55, 1.6s loop                                                 | Loading                                     |
 
 - No animation on typing, genre switching or infinite-scroll appends (frequent actions).
 - `prefers-reduced-motion: reduce` keeps the opacity fades and colour changes, and removes

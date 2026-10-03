@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon, MoonIcon, SunIcon } from '@phosphor-icons/react'
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { SITE_NAME } from '../config/app'
 import { t } from '../config/strings'
 import { useTheme } from '../lib/theme'
@@ -8,39 +8,47 @@ import { LogoMark } from './Logo'
 
 export function Header() {
   const navigate = useNavigate()
+  const { pathname } = useLocation()
   const { theme, toggle } = useTheme()
   const [query, setQuery] = useState('')
 
   function onSubmit(event: FormEvent) {
     event.preventDefault()
     const q = query.trim()
-    if (q) navigate(`/search?q=${encodeURIComponent(q)}`)
+    if (!q) return
+    navigate(`/search?q=${encodeURIComponent(q)}`)
+    setQuery('')
   }
+
+  // The search page has its own, larger field; one input per screen is enough.
+  const onSearchPage = pathname === '/search'
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-paper">
       <div className="wrap flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label={`${SITE_NAME}, ${t.nav.home}`}>
           <LogoMark className="size-8" />
-          <span className="display-serif hidden text-[23px] leading-none font-medium whitespace-nowrap sm:inline">
+          <span className="hidden display-serif text-[23px] leading-none font-medium whitespace-nowrap sm:inline">
             {SITE_NAME}
           </span>
         </Link>
 
         <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
-          <form role="search" onSubmit={onSubmit} className="min-w-0 flex-1 sm:max-w-72 sm:flex-none">
-            <label className="flex h-[38px] items-center gap-2 rounded-full border border-line bg-surface px-3 text-muted focus-within:border-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent">
-              <MagnifyingGlassIcon aria-hidden="true" className="size-4 shrink-0" />
-              <span className="sr-only">{t.nav.searchLabel}</span>
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t.nav.searchPlaceholder}
-                className="w-full min-w-0 bg-transparent text-sm text-ink outline-none placeholder:text-muted"
-              />
-            </label>
-          </form>
+          {!onSearchPage && (
+            <form role="search" onSubmit={onSubmit} className="min-w-0 flex-1 sm:max-w-72 sm:flex-none">
+              <label className="flex h-[38px] items-center gap-2 rounded-full border border-line bg-surface px-3 text-muted focus-within:border-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent">
+                <MagnifyingGlassIcon aria-hidden="true" className="size-4 shrink-0" />
+                <span className="sr-only">{t.nav.searchLabel}</span>
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={t.nav.searchPlaceholder}
+                  className="w-full min-w-0 bg-transparent text-sm text-ink outline-none placeholder:text-muted"
+                />
+              </label>
+            </form>
+          )}
           <button
             type="button"
             onClick={toggle}

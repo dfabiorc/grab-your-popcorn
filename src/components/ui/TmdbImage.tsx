@@ -20,7 +20,17 @@ interface TmdbImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'
  * reserve the box so nothing shifts while it loads. Missing images render a
  * quiet placeholder with the same footprint.
  */
-export function TmdbImage({ path, kind, width, height, sizes, alt, maxWidth, className = '', ...rest }: TmdbImageProps) {
+export function TmdbImage({
+  path,
+  kind,
+  width,
+  height,
+  sizes,
+  alt,
+  maxWidth,
+  className = '',
+  ...rest
+}: TmdbImageProps) {
   const base = useImageBase()
   const [loaded, setLoaded] = useState(false)
 
@@ -34,7 +44,7 @@ export function TmdbImage({ path, kind, width, height, sizes, alt, maxWidth, cla
     }
   }, [])
 
-  const src = imageUrl(path, width, base)
+  const src = imageUrl(path, width, base, kind)
   if (!src) {
     const Icon = kind === 'profile' ? UserIcon : FilmSlateIcon
     return (
@@ -58,7 +68,7 @@ export function TmdbImage({ path, kind, width, height, sizes, alt, maxWidth, cla
       data-loaded={loaded}
       onLoad={() => setLoaded(true)}
       onError={() => setLoaded(true)}
-      className={`fade-in-image bg-line ${className}`}
+      className={`bg-line fade-in-image ${className}`}
       {...rest}
     />
   )

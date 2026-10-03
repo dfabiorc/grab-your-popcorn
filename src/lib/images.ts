@@ -2,19 +2,40 @@ import { TMDB_IMAGE_BASE } from '../config/app'
 
 export type ImageKind = 'poster' | 'backdrop' | 'profile'
 
-/**
- * Widths available on the TMDB CDN for each image kind (from /configuration).
- * "original" is excluded on purpose: it can be several megabytes.
- */
-export const IMAGE_WIDTHS: Record<ImageKind, number[]> = {
-  poster: [92, 154, 185, 342, 500, 780],
-  backdrop: [300, 780, 1280],
-  profile: [45, 185],
+interface ImageSize {
+  /** Path segment on the CDN, e.g. "w342" or "h632". */
+  token: string
+  /** Rendered width in pixels, for the srcset `w` descriptor. */
+  width: number
 }
 
-export function imageUrl(path: string | null | undefined, width: number, base = TMDB_IMAGE_BASE): string | null {
+const w = (width: number): ImageSize => ({ token: `w${width}`, width })
+
+/**
+ * Sizes available on the TMDB CDN for each kind (from /configuration).
+ * Profiles jump from w185 to h632, a height-based size (~421px wide at 2:3).
+ * "original" is excluded on purpose: it can be several megabytes.
+ */
+export const IMAGE_SIZES: Record<ImageKind, ImageSize[]> = {
+  poster: [w(92), w(154), w(185), w(342), w(500), w(780)],
+  backdrop: [w(300), w(780), w(1280)],
+  profile: [w(45), w(185), { token: 'h632', width: 421 }],
+}
+
+/** Smallest CDN size at least `width` wide (or the largest available). */
+function sizeFor(kind: ImageKind, width: number): ImageSize {
+  const sizes = IMAGE_SIZES[kind]
+  return sizes.find((s) => s.width >= width) ?? sizes[sizes.length - 1]
+}
+
+export function imageUrl(
+  path: string | null | undefined,
+  width: number,
+  base = TMDB_IMAGE_BASE,
+  kind: ImageKind = 'poster',
+): string | null {
   if (!path) return null
-  return `${base}w${width}${path}`
+  return `${base}${sizeFor(kind, width).token}${path}`
 }
 
 /** A width-descriptor srcset so the browser picks the right size for `sizes`. */
@@ -25,8 +46,8 @@ export function imageSrcSet(
   maxWidth = Infinity,
 ): string | undefined {
   if (!path) return undefined
-  return IMAGE_WIDTHS[kind]
-    .filter((w) => w <= maxWidth)
-    .map((w) => `${base}w${w}${path} ${w}w`)
+  return IMAGE_SIZES[kind]
+    .filter((s) => s.width <= maxWidth)
+    .map((s) => `${base}${s.token}${path} ${s.width}w`)
     .join(', ')
 }

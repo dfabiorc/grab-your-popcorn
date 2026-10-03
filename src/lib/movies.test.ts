@@ -4,8 +4,14 @@ import { genreNames, parseGenreParam, uniqueById } from './movies'
 describe('uniqueById', () => {
   it('flattens pages and keeps the first occurrence', () => {
     const pages = [
-      [{ id: 1, v: 'a' }, { id: 2, v: 'b' }],
-      [{ id: 2, v: 'b2' }, { id: 3, v: 'c' }],
+      [
+        { id: 1, v: 'a' },
+        { id: 2, v: 'b' },
+      ],
+      [
+        { id: 2, v: 'b2' },
+        { id: 3, v: 'c' },
+      ],
     ]
     expect(uniqueById(pages)).toEqual([
       { id: 1, v: 'a' },

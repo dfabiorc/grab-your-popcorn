@@ -69,10 +69,13 @@ function MovieView({ movie }: { movie: MovieDetails }) {
             className="size-full object-cover object-[center_30%]"
           />
         )}
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-transparent from-55% to-paper md:from-35%" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-transparent from-55% to-paper md:from-35%"
+        />
       </div>
 
-      <div className="wrap relative -mt-20 grid grid-cols-[minmax(0,1fr)] gap-8 pb-20 md:-mt-44 md:grid-cols-[240px_minmax(0,1fr)] md:gap-12 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-14">
+      <div className="relative wrap -mt-20 grid grid-cols-[minmax(0,1fr)] gap-8 pb-20 md:-mt-44 md:grid-cols-[240px_minmax(0,1fr)] md:gap-12 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-14">
         <div className="w-40 md:sticky md:top-24 md:w-auto md:self-start">
           <div className="aspect-[2/3] overflow-hidden rounded-sm bg-line shadow-lift">
             <TmdbImage

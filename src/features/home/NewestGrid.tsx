@@ -84,11 +84,7 @@ export function NewestGrid({ genreId, excludeId, onClearGenre }: NewestGridProps
         )}
         {hasNextPage && !isFetchingNextPage && !query.isFetchNextPageError && (
           // Keyboard and assistive-tech fallback for the automatic loading.
-          <button
-            type="button"
-            onClick={() => fetchNextPage()}
-            className="btn-secondary"
-          >
+          <button type="button" onClick={() => fetchNextPage()} className="btn-secondary">
             {t.home.loadMore}
           </button>
         )}

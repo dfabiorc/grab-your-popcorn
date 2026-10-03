@@ -37,7 +37,7 @@ export function TrailerPlayer({ video }: { video: Video }) {
             decoding="async"
             className="size-full object-cover opacity-85"
           />
-          <span className="play-button absolute inset-0 m-auto grid size-[72px] place-items-center rounded-full bg-surface text-ink shadow-soft">
+          <span className="absolute inset-0 m-auto grid size-[72px] play-button place-items-center rounded-full bg-surface text-ink shadow-soft">
             <PlayIcon aria-hidden="true" weight="fill" className="ml-0.5 size-7" />
           </span>
           <span className="absolute bottom-3 left-4 max-w-[80%] truncate text-left text-sm text-white/90 [text-shadow:0_1px_2px_rgb(0_0_0/0.6)]">

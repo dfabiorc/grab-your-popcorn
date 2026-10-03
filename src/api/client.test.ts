@@ -33,9 +33,11 @@ describe('tmdbGet', () => {
     vi.stubEnv('VITE_TMDB_API_KEY', 'test-key')
     vi.stubGlobal(
       'fetch',
-      vi.fn().mockResolvedValue(
-        new Response(JSON.stringify({ status_message: 'The resource could not be found.' }), { status: 404 }),
-      ),
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(JSON.stringify({ status_message: 'The resource could not be found.' }), { status: 404 }),
+        ),
     )
     const error = await tmdbGet('/movie/0').catch((e: unknown) => e)
     expect(error).toBeInstanceOf(TmdbError)

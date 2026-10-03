@@ -65,6 +65,10 @@ describe('reviewParagraphs', () => {
     ])
   })
 
+  it('normalises non-breaking spaces', () => {
+    expect(reviewParagraphs('Great\u00a0film.')).toEqual(['Great film.'])
+  })
+
   it('strips markdown emphasis, links and html tags', () => {
     expect(reviewParagraphs('A **bold** and _quiet_ [link](https://x.y) <em>take</em>.')).toEqual([
       'A bold and quiet link take.',

@@ -56,7 +56,7 @@ export function FeaturedMovie({ movie, genres }: FeaturedMovieProps) {
         {movie.overview && (
           <p className="line-clamp-4 max-w-[46ch] font-serif text-lg leading-[1.55]">{movie.overview}</p>
         )}
-        <Link to={`/movie/${movie.id}`} className="btn-primary mt-6">
+        <Link to={`/movie/${movie.id}`} className="mt-6 btn-primary">
           {t.home.viewFilm}
           <ArrowRightIcon aria-hidden="true" className="btn-arrow size-4" />
         </Link>
@@ -71,13 +71,13 @@ export function FeaturedMovieSkeleton() {
       aria-hidden="true"
       className="grid gap-7 border-b border-line pt-8 pb-12 lg:grid-cols-[1.65fr_1fr] lg:items-end lg:gap-12 lg:pt-12 lg:pb-14"
     >
-      <div className="skeleton aspect-video rounded-md" />
+      <div className="aspect-video skeleton rounded-md" />
       <div>
-        <div className="skeleton h-3 w-24 rounded-sm" />
-        <div className="skeleton mt-4 h-14 w-4/5 rounded-sm" />
-        <div className="skeleton mt-5 h-3 w-3/5 rounded-sm" />
-        <div className="skeleton mt-6 h-20 w-full rounded-sm" />
-        <div className="skeleton mt-6 h-11 w-32 rounded-full" />
+        <div className="h-3 w-24 skeleton rounded-sm" />
+        <div className="mt-4 h-14 w-4/5 skeleton rounded-sm" />
+        <div className="mt-5 h-3 w-3/5 skeleton rounded-sm" />
+        <div className="mt-6 h-20 w-full skeleton rounded-sm" />
+        <div className="mt-6 h-11 w-32 skeleton rounded-full" />
       </div>
     </div>
   )

@@ -26,7 +26,7 @@ export function MovieCard({
           height={513}
           sizes={sizes}
           alt=""
-          className="poster-zoom size-full object-cover"
+          className="size-full poster-zoom object-cover"
         />
       </div>
       <h3 className="mt-3 font-serif text-[17px] leading-[1.25] font-medium tracking-[-0.005em] decoration-1 underline-offset-[3px] group-hover:underline">
@@ -40,9 +40,9 @@ export function MovieCard({
 export function MovieCardSkeleton() {
   return (
     <div aria-hidden="true">
-      <div className="skeleton aspect-[2/3] rounded-sm" />
-      <div className="skeleton mt-3 h-4 w-3/4 rounded-sm" />
-      <div className="skeleton mt-2 h-3 w-1/4 rounded-sm" />
+      <div className="aspect-[2/3] skeleton rounded-sm" />
+      <div className="mt-3 h-4 w-3/4 skeleton rounded-sm" />
+      <div className="mt-2 h-3 w-1/4 skeleton rounded-sm" />
     </div>
   )
 }

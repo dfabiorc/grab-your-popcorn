@@ -25,7 +25,7 @@ export function CastList({ cast }: { cast: CastCredit[] }) {
                   height={231}
                   sizes="(min-width: 1280px) 130px, (min-width: 640px) 25vw, 45vw"
                   alt=""
-                  className="poster-zoom size-full object-cover object-top"
+                  className="size-full poster-zoom object-cover object-top"
                 />
               </div>
               <strong className="mt-2.5 block leading-tight font-medium underline-offset-[3px] group-hover:underline">
@@ -47,7 +47,7 @@ export function CastList({ cast }: { cast: CastCredit[] }) {
           aria-expanded={expanded}
           aria-controls="cast-list"
           onClick={() => setExpanded((v) => !v)}
-          className="btn-secondary mt-7"
+          className="mt-7 btn-secondary"
         >
           {expanded ? t.movie.showLessCast : t.movie.showAllCast(cast.length)}
         </button>

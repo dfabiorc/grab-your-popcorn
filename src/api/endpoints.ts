@@ -42,7 +42,11 @@ export function discoverNewestMovies(page: number, filters: DiscoverFilters = {}
 }
 
 export function getMovie(id: number, signal?: AbortSignal) {
-  return tmdbGet<MovieDetails>(`/movie/${id}`, { append_to_response: 'credits,videos,reviews,recommendations,similar' }, signal)
+  return tmdbGet<MovieDetails>(
+    `/movie/${id}`,
+    { append_to_response: 'credits,videos,reviews,recommendations,similar' },
+    signal,
+  )
 }
 
 export function getPerson(id: number, signal?: AbortSignal) {
