@@ -13,7 +13,10 @@ export function CastList({ cast }: { cast: CastCredit[] }) {
   const visible = expanded ? cast : cast.slice(0, INITIAL)
   return (
     <>
-      <ul id="cast-list" className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+      <ul
+        id="cast-list"
+        className="reveal-grid cols-3-4-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+      >
         {visible.map((person) => (
           <li key={person.credit_id}>
             <Link to={`/person/${person.id}`} className="group block">

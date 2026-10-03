@@ -46,7 +46,7 @@ export function Filmography({ person }: { person: PersonDetails }) {
           return (
             <li
               key={entry.movie.id}
-              className={`grid grid-cols-[56px_minmax(0,1fr)] gap-4 py-3 ${showYear && i > 0 ? 'border-t border-line' : ''}`}
+              className={`reveal grid grid-cols-[56px_minmax(0,1fr)] gap-4 py-3 ${showYear && i > 0 ? 'border-t border-line' : ''}`}
             >
               {/* The cell stays in the grid; only repeated years are hidden (but still read out). */}
               <span className="text-sm text-muted tabular-nums">

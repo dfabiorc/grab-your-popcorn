@@ -54,30 +54,44 @@ function MovieView({ movie }: { movie: MovieDetails }) {
 
   return (
     <article>
-      {/* Backdrop band that fades into the page. Decorative: the poster carries the alt text. */}
-      <div className="relative h-[clamp(260px,38vw,460px)] overflow-hidden bg-line">
-        {movie.backdrop_path && (
-          <TmdbImage
-            path={movie.backdrop_path}
-            kind="backdrop"
-            width={1280}
-            height={720}
-            sizes="100vw"
-            alt=""
-            loading="eager"
-            fetchPriority="high"
-            className="size-full object-cover object-[center_30%]"
-          />
-        )}
+      {/*
+        Backdrop band, starting under the translucent header. While scrolling it
+        drifts slower than the page and dissolves into the paper (parallax-* in
+        styles/motion.css). Decorative: the poster carries the alt text.
+      */}
+      <div
+        className="relative -mt-16 h-[clamp(360px,56vw,760px)] overflow-hidden bg-line"
+        style={{ viewTransitionName: 'film-backdrop' }}
+      >
+        <div className="parallax-backdrop absolute inset-0">
+          {movie.backdrop_path && (
+            <TmdbImage
+              path={movie.backdrop_path}
+              kind="backdrop"
+              width={1280}
+              height={720}
+              sizes="100vw"
+              alt=""
+              loading="eager"
+              fetchPriority="high"
+              className="size-full object-cover object-[center_30%]"
+            />
+          )}
+        </div>
+        <div aria-hidden="true" className="parallax-dim absolute inset-0 bg-paper opacity-0" />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-b from-transparent from-55% to-paper md:from-35%"
+          className="absolute inset-0 bg-gradient-to-b from-transparent from-50% to-paper md:from-40%"
         />
       </div>
 
-      <div className="relative wrap -mt-20 grid grid-cols-[minmax(0,1fr)] gap-8 pb-20 md:-mt-44 md:grid-cols-[240px_minmax(0,1fr)] md:gap-12 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-14">
+      <div className="relative wrap -mt-24 grid grid-cols-[minmax(0,1fr)] gap-8 pb-20 md:-mt-56 md:grid-cols-[240px_minmax(0,1fr)] md:gap-12 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-14">
         <div className="w-40 md:sticky md:top-24 md:w-auto md:self-start">
-          <div className="aspect-[2/3] overflow-hidden rounded-sm bg-line shadow-lift">
+          {/* Destination of the poster that travels here from the home grid. */}
+          <div
+            className="aspect-[2/3] overflow-hidden rounded-sm bg-line shadow-lift"
+            style={{ viewTransitionName: 'film-poster' }}
+          >
             <TmdbImage
               path={movie.poster_path}
               kind="poster"
@@ -91,17 +105,21 @@ function MovieView({ movie }: { movie: MovieDetails }) {
           </div>
         </div>
 
-        <div className="min-w-0 md:pt-36">
+        <div className="min-w-0 md:pt-44">
           <BackLink />
-          <h1 className="display-serif text-[clamp(38px,5.2vw,68px)] leading-[1.02] font-medium">{movie.title}</h1>
+          <h1 className="display-serif text-[clamp(44px,6.4vw,96px)] leading-[0.98] font-medium text-balance">
+            {movie.title}
+          </h1>
           {movie.tagline && <p className="mt-2.5 font-serif text-xl leading-snug text-muted italic">{movie.tagline}</p>}
 
           <MovieFacts movie={movie} />
 
           <Section title={t.movie.overview} hideTitle className="mt-9!">
-            <p className="max-w-[62ch] font-serif text-[19px] leading-[1.65]">{movie.overview || t.movie.noOverview}</p>
+            <p className="reveal max-w-[62ch] font-serif text-[19px] leading-[1.65]">
+              {movie.overview || t.movie.noOverview}
+            </p>
             {crew.length > 0 && (
-              <dl className="mt-6 flex flex-wrap gap-x-12 gap-y-3">
+              <dl className="reveal mt-6 flex flex-wrap gap-x-12 gap-y-3">
                 {crew.map((person) => (
                   <div key={person.id}>
                     <dt className="text-[13px] text-muted">{person.jobs.join(', ')}</dt>
@@ -118,7 +136,9 @@ function MovieView({ movie }: { movie: MovieDetails }) {
 
           {trailer && (
             <Section title={t.movie.trailer}>
-              <TrailerPlayer video={trailer} />
+              <div className="reveal-zoom">
+                <TrailerPlayer video={trailer} />
+              </div>
             </Section>
           )}
 

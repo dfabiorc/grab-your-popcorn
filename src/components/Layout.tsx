@@ -1,9 +1,15 @@
+import { useEffect } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router'
 import { t } from '../config/strings'
 import { Footer } from './Footer'
 import { Header } from './Header'
+import { NavigationProgress } from './NavigationProgress'
+import { markAppReady } from '../lib/navigation'
 
 export function Layout() {
+  // From now on, in-app navigations may briefly wait for data (see routes.tsx).
+  useEffect(markAppReady, [])
+
   return (
     <div className="flex min-h-dvh flex-col">
       <a
@@ -17,6 +23,7 @@ export function Layout() {
       >
         {t.nav.skipToContent}
       </a>
+      <NavigationProgress />
       <Header />
       {/* At least one screen tall: the footer never sits in view while a page is loading and then jumps. */}
       <main id="main" tabIndex={-1} className="min-h-dvh outline-none">

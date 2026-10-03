@@ -24,6 +24,9 @@ export { expect }
 
 /** WCAG 2.2 A/AA violations on the current page (excluding third-party frames). */
 export async function expectNoA11yViolations(page: Page) {
+  // Check the settled design: mid-reveal elements are partly transparent, which
+  // axe would report as low contrast. Reduced motion renders the final state.
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag22aa']).exclude('iframe').analyze()
   const summary = results.violations.map((v) => `${v.id}: ${v.help} (${v.nodes.length})`)
   expect(summary, 'accessibility violations').toEqual([])

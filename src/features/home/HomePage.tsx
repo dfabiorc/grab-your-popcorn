@@ -18,34 +18,48 @@ export function HomePage() {
   // "All" grid, so it costs no extra request.
   const latest = useInfiniteQuery(queries.newest({}))
   const featured = latest.data?.pages[0]?.results.find((m) => m.backdrop_path && m.overview)
+  const hasHero = latest.isPending || Boolean(featured)
 
   function selectGenre(id: number | undefined) {
     // Shareable (#/?genre=28) without piling up history entries.
     setParams(id ? { genre: String(id) } : {}, { replace: true, preventScrollReset: true })
   }
 
+  if (latest.isError) {
+    return (
+      <div className="wrap">
+        <ErrorState error={latest.error} onRetry={() => latest.refetch()} />
+      </div>
+    )
+  }
+
   return (
-    <div className="wrap">
+    <>
       {latest.isPending && <FeaturedMovieSkeleton />}
-      {latest.isError && <ErrorState error={latest.error} onRetry={() => latest.refetch()} />}
       {featured && <FeaturedMovie movie={featured} genres={genreNames(featured.genre_ids, genres.data)} />}
 
-      {!latest.isError && (
-        <section aria-labelledby="listing-title" className="pt-12 pb-20">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <h2 id="listing-title" className="font-serif text-[34px] leading-[1.1] font-medium tracking-[-0.02em]">
+      {/* With a hero above, this is the sheet that slides over it while scrolling. */}
+      <section aria-labelledby="listing-title" className={`bg-paper ${hasHero ? 'hero-follow' : ''}`}>
+        <div className="wrap pt-14 pb-20 md:pt-20">
+          <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+            <h2
+              id="listing-title"
+              className="reveal-mask display-serif text-[clamp(40px,5.5vw,72px)] leading-[1] font-medium"
+            >
               {t.home.newReleases}
             </h2>
-            <p className="text-sm text-muted">{t.home.newReleasesNote}</p>
+            <p className="reveal pb-2 text-sm text-muted">{t.home.newReleasesNote}</p>
           </div>
-          <GenreFilter genres={genres.data} selected={genreId} onSelect={selectGenre} />
+          <div className="reveal">
+            <GenreFilter genres={genres.data} selected={genreId} onSelect={selectGenre} />
+          </div>
           <NewestGrid
             genreId={genreId}
             excludeId={genreId ? undefined : featured?.id}
             onClearGenre={() => selectGenre(undefined)}
           />
-        </section>
-      )}
-    </div>
+        </div>
+      </section>
+    </>
   )
 }

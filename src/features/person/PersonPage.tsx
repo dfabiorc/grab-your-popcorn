@@ -81,12 +81,14 @@ function PersonView({ person }: { person: PersonDetails }) {
 
       <div className="min-w-0">
         <BackLink />
-        <h1 className="display-serif text-[clamp(38px,5.2vw,64px)] leading-[1.02] font-medium">{person.name}</h1>
+        <h1 className="display-serif text-[clamp(44px,6.4vw,96px)] leading-[0.98] font-medium text-balance">
+          {person.name}
+        </h1>
 
         <FactList facts={facts} />
 
         <Section title={t.person.biography} hideTitle className="mt-9!">
-          <div className="max-w-[62ch]">
+          <div className="reveal max-w-[62ch]">
             {bio.length ? (
               <ExpandableProse
                 paragraphs={bio}

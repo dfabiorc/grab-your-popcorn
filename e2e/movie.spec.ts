@@ -26,6 +26,8 @@ test.describe('film page', () => {
     for (const section of ['Trailer', 'Cast', 'Reviews', 'More like this']) {
       await expect(page.getByRole('heading', { level: 2, name: section })).toBeVisible()
     }
+    // Nothing may widen the layout: on phones that zooms the whole page out.
+    expect(await page.evaluate(() => innerWidth)).toBe(page.viewportSize()!.width)
     await waitForImages(page)
     await expectNoA11yViolations(page)
   })

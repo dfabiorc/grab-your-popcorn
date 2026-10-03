@@ -8,6 +8,8 @@ import { useLoadMoreSentinel } from '../../hooks/useLoadMoreSentinel'
 import { uniqueById } from '../../lib/movies'
 
 const GRID = 'grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-9 lg:grid-cols-6'
+// Cards cascade into place as each row scrolls in (styles/motion.css).
+const REVEAL = 'reveal-grid cols-3-6'
 
 interface NewestGridProps {
   genreId: number | undefined
@@ -58,10 +60,10 @@ export function NewestGrid({ genreId, excludeId, onClearGenre }: NewestGridProps
 
   return (
     <>
-      <ul className={GRID}>
+      <ul className={`${GRID} ${REVEAL}`}>
         {movies.map((movie) => (
           <li key={movie.id}>
-            <MovieCard movie={movie} />
+            <MovieCard movie={movie} morph />
           </li>
         ))}
         {isFetchingNextPage &&

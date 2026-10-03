@@ -1,16 +1,21 @@
 import { createHashRouter, type LoaderFunctionArgs } from 'react-router'
 import { queries } from './api/queries'
 import { queryClient } from './api/queryClient'
+import { Header } from './components/Header'
 import { Layout } from './components/Layout'
 import { NotFound, RouteError } from './components/NotFound'
 import { HomePage } from './features/home/HomePage'
+import { isAppReady, loadMoviePage, settleWithin } from './lib/navigation'
 import { parseGenreParam } from './lib/movies'
 
 /**
- * Loaders only *start* the requests (they never await them), so data downloads
- * in parallel with the page's code chunk while the page shows its skeleton
- * immediately. The components read the same cached queries.
+ * Loaders *start* the requests so data downloads in parallel with the page's
+ * code chunk. On the first load they never wait (the page shows its skeleton
+ * at once). For in-app navigations to a film they wait up to 600 ms, so the
+ * poster can travel straight into the finished page (see MovieCard).
  */
+const MAX_WAIT_MS = 600
+
 function prefetchHome({ request }: LoaderFunctionArgs) {
   const genreId = parseGenreParam(new URL(request.url).searchParams.get('genre'))
   void queryClient.prefetchInfiniteQuery(queries.newest({}))
@@ -24,9 +29,11 @@ const validId = (value: string | undefined) => {
   return Number.isInteger(id) && id > 0 ? id : null
 }
 
-function prefetchMovie({ params }: LoaderFunctionArgs) {
+async function prefetchMovie({ params }: LoaderFunctionArgs) {
   const id = validId(params.id)
-  if (id) void queryClient.prefetchQuery(queries.movie(id))
+  if (!id) return null
+  const ready = queryClient.prefetchQuery(queries.movie(id))
+  if (isAppReady()) await settleWithin(ready, MAX_WAIT_MS)
   return null
 }
 
@@ -43,13 +50,14 @@ export const router = createHashRouter([
   {
     element: <Layout />,
     errorElement: <RouteError />,
-    hydrateFallbackElement: null,
+    // Shown for the instant before the first loader settles; matches the static shell in index.html.
+    hydrateFallbackElement: <Header />,
     children: [
       { index: true, element: <HomePage />, loader: prefetchHome },
       {
         path: 'movie/:id',
         loader: prefetchMovie,
-        lazy: () => import('./features/movie/MoviePage').then((m) => ({ Component: m.MoviePage })),
+        lazy: () => loadMoviePage().then((m) => ({ Component: m.MoviePage })),
       },
       {
         path: 'person/:id',

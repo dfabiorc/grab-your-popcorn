@@ -1,5 +1,6 @@
-import { Link } from 'react-router'
+import { Link, useViewTransitionState } from 'react-router'
 import { releaseYear } from '../lib/format'
+import { prefetchMoviePage } from '../lib/navigation'
 import type { MovieSummary } from '../types/tmdb'
 import { TmdbImage } from './ui/TmdbImage'
 
@@ -8,17 +9,38 @@ interface MovieCardProps {
   /** Optional second line under the title (defaults to the release year). */
   subtitle?: string | null
   sizes?: string
+  /**
+   * Let the poster travel into the film page when opened. Off for cards shown
+   * on a film page itself, whose own poster already owns the transition name.
+   */
+  morph?: boolean
 }
 
 export function MovieCard({
   movie,
   subtitle,
   sizes = '(min-width: 1280px) 185px, (min-width: 1024px) 15vw, (min-width: 640px) 30vw, 45vw',
+  morph = false,
 }: MovieCardProps) {
+  const to = `/movie/${movie.id}`
+  // Only the card being opened gets the shared name, and only during the transition.
+  const opening = useViewTransitionState(to)
   const meta = subtitle ?? releaseYear(movie.release_date)
+  const warmUp = () => prefetchMoviePage(movie.id)
+
   return (
-    <Link to={`/movie/${movie.id}`} className="group block">
-      <div className="aspect-[2/3] overflow-hidden rounded-sm bg-line shadow-soft">
+    <Link
+      to={to}
+      viewTransition
+      className="group block"
+      onPointerEnter={warmUp}
+      onPointerDown={warmUp}
+      onFocus={warmUp}
+    >
+      <div
+        className="aspect-[2/3] overflow-hidden rounded-sm bg-line shadow-soft"
+        style={morph && opening ? { viewTransitionName: 'film-poster' } : undefined}
+      >
         <TmdbImage
           path={movie.poster_path}
           kind="poster"

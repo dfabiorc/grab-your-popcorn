@@ -37,7 +37,7 @@ function ReviewItem({ review }: { review: Review }) {
   const date = formatDate(review.created_at.slice(0, 10))
 
   return (
-    <article className="border-t border-line py-6">
+    <article className="reveal border-t border-line py-6">
       <header className="mb-2 flex flex-wrap items-baseline justify-between gap-x-4 text-sm text-muted">
         <span>
           <strong className="font-medium text-ink">{review.author}</strong>

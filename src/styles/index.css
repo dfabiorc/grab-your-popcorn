@@ -4,6 +4,7 @@
 @import '@fontsource-variable/newsreader/wght-italic.css';
 @import '@fontsource-variable/instrument-sans/wght.css';
 @import 'tailwindcss';
+@import './motion.css';
 
 /* Tokens mirror DESIGN.md. Semantic colours are CSS variables so the dark
    theme only swaps values; utilities like bg-paper/text-muted stay the same. */

@@ -15,7 +15,9 @@ export function Section({ title, children, hideTitle, className = '' }: SectionP
     <section aria-labelledby={id} className={`mt-14 ${className}`}>
       <h2
         id={id}
-        className={hideTitle ? 'sr-only' : 'mb-5 font-serif text-[26px] leading-[1.2] font-medium tracking-[-0.015em]'}
+        className={
+          hideTitle ? 'sr-only' : 'reveal-mask mb-6 display-serif text-[clamp(28px,3vw,40px)] leading-[1.1] font-medium'
+        }
       >
         {title}
       </h2>

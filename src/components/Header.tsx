@@ -24,7 +24,7 @@ export function Header() {
   const onSearchPage = pathname === '/search'
 
   return (
-    <header className="sticky top-0 z-20 border-b border-line bg-paper">
+    <header className="glass-header sticky top-0 z-20 border-b border-line">
       <div className="wrap flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label={`${SITE_NAME}, ${t.nav.home}`}>
           <LogoMark className="size-8" />

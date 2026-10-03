@@ -14,6 +14,7 @@ import { uniqueById } from '../../lib/movies'
 import type { SearchMovieResult, SearchPersonResult } from '../../types/tmdb'
 
 const GRID = 'grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-6'
+const REVEAL = 'reveal-grid cols-3-6'
 
 export function SearchPage() {
   const [params, setParams] = useSearchParams()
@@ -31,7 +32,7 @@ export function SearchPage() {
   return (
     <div className="wrap pt-10 pb-20 md:pt-14">
       <form role="search" onSubmit={(e) => e.preventDefault()} className="max-w-[720px]">
-        <h1 className="display-serif text-[clamp(36px,4.6vw,56px)] leading-[1.05] font-medium">
+        <h1 className="display-serif text-[clamp(44px,6.4vw,96px)] leading-[0.98] font-medium">
           <label htmlFor="search-input">{t.search.title}</label>
         </h1>
         <div className="mt-5 flex h-14 items-center gap-3 rounded-full border border-line bg-surface px-5 text-muted focus-within:border-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent">
@@ -104,7 +105,7 @@ function SearchResults({ query, typing }: { query: string; typing: boolean }) {
 
       {people.length > 0 && (
         <Section title={t.search.people} className="mt-10!">
-          <ul className={GRID}>
+          <ul className={`${GRID} ${REVEAL}`}>
             {people.map((person) => (
               <li key={person.id}>
                 <PersonCard person={person} />
@@ -116,10 +117,10 @@ function SearchResults({ query, typing }: { query: string; typing: boolean }) {
 
       {films.length > 0 && (
         <Section title={t.search.films}>
-          <ul className={GRID}>
+          <ul className={`${GRID} ${REVEAL}`}>
             {films.map((movie) => (
               <li key={movie.id}>
-                <MovieCard movie={movie} />
+                <MovieCard movie={movie} morph />
               </li>
             ))}
           </ul>
