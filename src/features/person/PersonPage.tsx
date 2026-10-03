@@ -5,6 +5,7 @@ import { queries } from '../../api/queries'
 import { BackLink } from '../../components/BackLink'
 import { MovieRow } from '../../components/MovieRow'
 import { ExpandableProse } from '../../components/ui/ExpandableProse'
+import { FactList, type Fact } from '../../components/ui/FactList'
 import { Section } from '../../components/ui/Section'
 import { ErrorState, StatusMessage } from '../../components/ui/StatusMessage'
 import { TmdbImage } from '../../components/ui/TmdbImage'
@@ -51,7 +52,7 @@ function PersonView({ person }: { person: PersonDetails }) {
 
   // Age goes next to the birth date while alive, next to the death date otherwise.
   const withAge = (date: string) => (age === null ? date : `${date} (${t.person.age(age)})`)
-  const facts: Array<{ label: string; value: string }> = []
+  const facts: Fact[] = []
   if (person.known_for_department) {
     const department = person.known_for_department
     facts.push({ label: t.person.knownForDepartment, value: t.person.departments[department] ?? department })
@@ -82,14 +83,7 @@ function PersonView({ person }: { person: PersonDetails }) {
         <BackLink />
         <h1 className="display-serif text-[clamp(38px,5.2vw,64px)] leading-[1.02] font-medium">{person.name}</h1>
 
-        <dl className="mt-7 grid grid-cols-2 border-t border-line sm:grid-cols-4">
-          {facts.map((fact) => (
-            <div key={fact.label} className="border-b border-line py-3.5 pr-4">
-              <dt className="text-[13px] text-muted">{fact.label}</dt>
-              <dd className="mt-0.5 font-medium">{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <FactList facts={facts} />
 
         <Section title={t.person.biography} hideTitle className="mt-9!">
           <div className="max-w-[62ch]">

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
+import { FactList, type Fact } from '../../components/ui/FactList'
 import { t } from '../../config/strings'
 import { formatCount, formatDate, formatRuntime, formatScore } from '../../lib/format'
 import type { MovieDetails } from '../../types/tmdb'
@@ -28,21 +29,12 @@ export function MovieFacts({ movie }: { movie: MovieDetails }) {
     <span className="font-normal text-muted">{t.movie.notRated}</span>
   )
 
-  const facts: Array<{ label: string; value: ReactNode }> = [
+  const facts: Fact[] = [
     { label: t.movie.released, value: formatDate(movie.release_date) ?? '-' },
     { label: t.movie.runtime, value: formatRuntime(movie.runtime) ?? '-' },
     { label: t.movie.genres, value: genres },
     { label: t.movie.score, value: rating },
   ]
 
-  return (
-    <dl className="mt-7 grid grid-cols-2 border-t border-line sm:grid-cols-4">
-      {facts.map(({ label, value }) => (
-        <div key={label} className="border-b border-line py-3.5 pr-4">
-          <dt className="text-[13px] text-muted">{label}</dt>
-          <dd className="mt-0.5 font-medium">{value}</dd>
-        </div>
-      ))}
-    </dl>
-  )
+  return <FactList facts={facts} />
 }
