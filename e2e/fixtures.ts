@@ -154,8 +154,9 @@ function search(query: string) {
 const IMAGE = `<svg xmlns="http://www.w3.org/2000/svg" width="342" height="513"><rect width="100%" height="100%" fill="#8a7f72"/></svg>`
 
 /**
- * Serves every TMDB/YouTube request from the fixtures above and fails the
- * test if the app tries to reach anything else on the network.
+ * Serves every TMDB, image CDN and YouTube request from the fixtures above.
+ * A TMDB endpoint without a fixture answers 501, which the browser logs as a
+ * console error, and that fails the test (see e2e/test.ts).
  */
 export async function mockTmdb(page: Page) {
   const json = (route: Route, body: unknown, status = 200) =>
